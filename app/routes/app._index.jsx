@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFetcher } from "@remix-run/react";
-import stylesUrl from "../styles.css";
+import stylesUrl from "../styles.module.css";
 
 export const links = () => [{ rel: "stylesheet", href: stylesUrl }];
 
