@@ -15,7 +15,7 @@ const app = express();
 app.all(
   "*",
   createRequestHandler({
-    build: () => import("./build/index.js"),
+    build: () => import("./build/server/index.js"),
     mode: process.env.NODE_ENV,
   })
 );
