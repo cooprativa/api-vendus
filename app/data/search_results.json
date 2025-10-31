@@ -1,0 +1,229 @@
+{
+  "searchDate": "2025-10-31T03:39:39.649Z",
+  "totalSearched": 3,
+  "totalFound": 3,
+  "found": {
+    "DANI 23549": {
+      "page": 1,
+      "position": 1,
+      "productData": {
+        "id": 158892760,
+        "title": " BOTA",
+        "reference": "DANI 23549",
+        "code": "",
+        "barcode": "",
+        "description": "Coleção Outono/Inverno 2023 (OI23)",
+        "price": "169.90",
+        "price_without_tax": "138.13",
+        "supply_price": "69.50",
+        "stock": 1,
+        "stock_alert": 0,
+        "status": "on",
+        "category_id": 151384883,
+        "brand_id": 158890418,
+        "type_id": "P",
+        "unit_id": 145418003,
+        "tax_id": "",
+        "stock_stores": [
+          {
+            "store": "Loja principal",
+            "store_id": 145418018,
+            "qty": 1
+          }
+        ],
+        "compound": {
+          "stock": {
+            "stock": 1,
+            "store_id": 0,
+            "stock_alert": 0
+          }
+        },
+        "prices": [
+          {
+            "id": 145418015,
+            "price": "169.90",
+            "price_without_tax": "138.13"
+          }
+        ],
+        "images": [
+          "https://www.vendus.pt/foto/a8e95e786c1a1c0d806b6bd41bf91beb_m.jpg"
+        ],
+        "colors": [
+          "PRETO",
+          "LEOPARDO"
+        ],
+        "sizes": [
+          "35",
+          "38"
+        ],
+        "variants": [
+          {
+            "variant": {
+              "id": 151351508,
+              "title": "PRETO",
+              "code": "PRETO"
+            },
+            "product_variants": [
+              {
+                "id": 2662415,
+                "text": "PRETO / 35",
+                "barcode": "1068052412698993",
+                "code": "DANI 23549.PRETO.35",
+                "price": "0.00",
+                "composite_ids": [
+                  "151351508",
+                  "151351338"
+                ],
+                "stock": [
+                  {
+                    "store_id": 145418018,
+                    "qty": 0
+                  },
+                  {
+                    "store_id": 256960242,
+                    "qty": 0
+                  },
+                  {
+                    "store_id": 259707703,
+                    "qty": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "variant": {
+              "id": 158175508,
+              "title": "LEOPARDO ",
+              "code": "LEOPARDO"
+            },
+            "product_variants": [
+              {
+                "id": 1918021,
+                "text": "LEOPARDO  / 38",
+                "barcode": "1068052311918325",
+                "code": "DANI 23549.LEOPARDO.38",
+                "price": "0.00",
+                "composite_ids": [
+                  "158175508",
+                  "151351395"
+                ],
+                "stock": [
+                  {
+                    "store_id": 145418018,
+                    "qty": 1
+                  },
+                  {
+                    "store_id": 256960242,
+                    "qty": 0
+                  },
+                  {
+                    "store_id": 259707703,
+                    "qty": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "VLNV 25": {
+      "page": 1,
+      "position": 14,
+      "productData": {
+        "id": 181746749,
+        "title": "ACESSORIO",
+        "reference": "VLNV 25",
+        "code": "",
+        "barcode": "VLNV 25",
+        "description": "",
+        "price": "25.99",
+        "price_without_tax": "21.13",
+        "supply_price": "10.40",
+        "stock": 2,
+        "stock_alert": 0,
+        "status": "on",
+        "category_id": 151499811,
+        "brand_id": 181741087,
+        "type_id": "P",
+        "unit_id": 145418003,
+        "tax_id": "",
+        "stock_stores": [
+          {
+            "store": "Loja principal",
+            "store_id": 145418018,
+            "qty": 2
+          }
+        ],
+        "compound": {
+          "stock": {
+            "stock": 2,
+            "store_id": 0,
+            "stock_alert": 0
+          }
+        },
+        "prices": [
+          {
+            "id": 145418015,
+            "price": "25.99",
+            "price_without_tax": "21.13"
+          }
+        ],
+        "images": [],
+        "colors": [],
+        "sizes": [],
+        "variants": []
+      }
+    },
+    "ACESS 13": {
+      "page": 1,
+      "position": 19,
+      "productData": {
+        "id": 205396752,
+        "title": "ACESSORIO",
+        "reference": "ACESS 13",
+        "code": "",
+        "barcode": "ACESS 13",
+        "description": "",
+        "price": "13.90",
+        "price_without_tax": "11.30",
+        "supply_price": "6.00",
+        "stock": 7,
+        "stock_alert": 0,
+        "status": "on",
+        "category_id": 151499811,
+        "brand_id": 161973924,
+        "type_id": "P",
+        "unit_id": 145418003,
+        "tax_id": "",
+        "stock_stores": [
+          {
+            "store": "Loja principal",
+            "store_id": 145418018,
+            "qty": 7
+          }
+        ],
+        "compound": {
+          "stock": {
+            "stock": 7,
+            "store_id": 0,
+            "stock_alert": 0
+          }
+        },
+        "prices": [
+          {
+            "id": 145418015,
+            "price": "13.90",
+            "price_without_tax": "11.30"
+          }
+        ],
+        "images": [],
+        "colors": [],
+        "sizes": [],
+        "variants": []
+      }
+    }
+  },
+  "notFound": []
+}

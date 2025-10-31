@@ -1,0 +1,42 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DISPLAY_LOG_ENTRIES = exports.MAX_LOG_ENTRIES = exports.SYNC_INTERVAL_MS = exports.SYNC_LOG_FILE = exports.MONITOR_STATE_FILE = exports.SEARCH_RESULTS_FILE = exports.SHORTCUTS_FILE = exports.DATA_DIR = void 0;
+
+var _path = _interopRequireDefault(require("path"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+// app/constants/monitor.js
+// File paths
+var DATA_DIR = _path["default"].join(process.cwd(), "app", "data");
+
+exports.DATA_DIR = DATA_DIR;
+
+var SHORTCUTS_FILE = _path["default"].join(DATA_DIR, "shortcuts.json");
+
+exports.SHORTCUTS_FILE = SHORTCUTS_FILE;
+
+var SEARCH_RESULTS_FILE = _path["default"].join(DATA_DIR, "search_results.json");
+
+exports.SEARCH_RESULTS_FILE = SEARCH_RESULTS_FILE;
+
+var MONITOR_STATE_FILE = _path["default"].join(DATA_DIR, "monitor_state.json");
+
+exports.MONITOR_STATE_FILE = MONITOR_STATE_FILE;
+
+var SYNC_LOG_FILE = _path["default"].join(DATA_DIR, "sync_log.json"); // Timing constants
+
+
+exports.SYNC_LOG_FILE = SYNC_LOG_FILE;
+var SYNC_INTERVAL_MS = 30000; // 30 seconds
+// Log management
+
+exports.SYNC_INTERVAL_MS = SYNC_INTERVAL_MS;
+var MAX_LOG_ENTRIES = 100;
+exports.MAX_LOG_ENTRIES = MAX_LOG_ENTRIES;
+var DISPLAY_LOG_ENTRIES = 20;
+exports.DISPLAY_LOG_ENTRIES = DISPLAY_LOG_ENTRIES;
+//# sourceMappingURL=monitor.dev.js.map

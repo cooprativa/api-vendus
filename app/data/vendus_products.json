@@ -1,0 +1,1238 @@
+[
+  {
+    "id": 158892760,
+    "order": 0,
+    "reference": "DANI 23549",
+    "barcode": "",
+    "supplier_code": "",
+    "title": " BOTA",
+    "description": "Coleção Outono/Inverno 2023 (OI23)",
+    "include_description": "no",
+    "supply_price": "69.50",
+    "gross_price": "169.90",
+    "price_without_tax": "138.13",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "169.90",
+        "price_without_tax": "138.13"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 1,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151384883,
+    "brand_id": 158890418,
+    "status": "on",
+    "stock": 1,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 1
+      }
+    ],
+    "stock_alert": 0,
+    "variant_id": 151351012,
+    "variants": [
+      {
+        "variant": {
+          "id": 151351508,
+          "title": "PRETO",
+          "code": "PRETO"
+        },
+        "product_variants": [
+          {
+            "id": 2662415,
+            "text": "PRETO / 35",
+            "barcode": "1068052412698993",
+            "code": "DANI 23549.PRETO.35",
+            "price": "0.00",
+            "composite_ids": [
+              "151351508",
+              "151351338"
+            ],
+            "stock": [
+              {
+                "store_id": 145418018,
+                "qty": 0
+              },
+              {
+                "store_id": 256960242,
+                "qty": 0
+              },
+              {
+                "store_id": 259707703,
+                "qty": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "variant": {
+          "id": 158175508,
+          "title": "LEOPARDO ",
+          "code": "LEOPARDO"
+        },
+        "product_variants": [
+          {
+            "id": 1918021,
+            "text": "LEOPARDO  / 38",
+            "barcode": "1068052311918325",
+            "code": "DANI 23549.LEOPARDO.38",
+            "price": "0.00",
+            "composite_ids": [
+              "158175508",
+              "151351395"
+            ],
+            "stock": [
+              {
+                "store_id": 145418018,
+                "qty": 1
+              },
+              {
+                "store_id": 256960242,
+                "qty": 0
+              },
+              {
+                "store_id": 259707703,
+                "qty": 0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "images": {
+      "xs": "https://www.vendus.pt/foto/a8e95e786c1a1c0d806b6bd41bf91beb_xs.jpg",
+      "m": "https://www.vendus.pt/foto/a8e95e786c1a1c0d806b6bd41bf91beb_m.jpg"
+    },
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 266864445,
+    "order": 0,
+    "reference": "SC01 07734",
+    "barcode": "",
+    "supplier_code": "",
+    "title": " CAMISOLA",
+    "description": "PV25",
+    "include_description": "no",
+    "supply_price": "19.80",
+    "gross_price": "49.90",
+    "price_without_tax": "40.57",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "49.90",
+        "price_without_tax": "40.57"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 0,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151429493,
+    "brand_id": 155241426,
+    "status": "on",
+    "stock": 0,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 0
+      }
+    ],
+    "stock_alert": 0,
+    "variant_id": 145418639,
+    "variants": [
+      {
+        "variant": {
+          "id": 151350388,
+          "title": "PRETO",
+          "code": "PRETO"
+        },
+        "product_variants": [
+          {
+            "id": 2939848,
+            "text": "PRETO / M",
+            "barcode": "1068052502998810",
+            "code": "SC01 07734.PRETO.M",
+            "price": "0.00",
+            "composite_ids": [
+              "151350388",
+              "151350495"
+            ],
+            "stock": [
+              {
+                "store_id": 145418018,
+                "qty": 0
+              },
+              {
+                "store_id": 256960242,
+                "qty": 0
+              },
+              {
+                "store_id": 259707703,
+                "qty": 0
+              }
+            ]
+          },
+          {
+            "id": 2939849,
+            "text": "PRETO / 2XL",
+            "barcode": "1068052502998811",
+            "code": "SC01 07734.PRETO.2XL",
+            "price": "0.00",
+            "composite_ids": [
+              "151350388",
+              "151430380"
+            ],
+            "stock": [
+              {
+                "store_id": 145418018,
+                "qty": 0
+              },
+              {
+                "store_id": 256960242,
+                "qty": 0
+              },
+              {
+                "store_id": 259707703,
+                "qty": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "variant": {
+          "id": 161383120,
+          "title": "AZUL MARINHO",
+          "code": "AZUL MARINHO"
+        },
+        "product_variants": [
+          {
+            "id": 2939850,
+            "text": "AZUL MARINHO / M",
+            "barcode": "1068052502998812",
+            "code": "SC01 07734.AZUL MARINHO.M",
+            "price": "0.00",
+            "composite_ids": [
+              "161383120",
+              "151350495"
+            ],
+            "stock": [
+              {
+                "store_id": 145418018,
+                "qty": 0
+              },
+              {
+                "store_id": 256960242,
+                "qty": 0
+              },
+              {
+                "store_id": 259707703,
+                "qty": 0
+              }
+            ]
+          },
+          {
+            "id": 2939851,
+            "text": "AZUL MARINHO / 2XL",
+            "barcode": "1068052502998813",
+            "code": "SC01 07734.AZUL MARINHO.2XL",
+            "price": "0.00",
+            "composite_ids": [
+              "161383120",
+              "151430380"
+            ],
+            "stock": [
+              {
+                "store_id": 145418018,
+                "qty": 0
+              },
+              {
+                "store_id": 256960242,
+                "qty": 0
+              },
+              {
+                "store_id": 259707703,
+                "qty": 0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 176080100,
+    "order": 0,
+    "reference": "ACESS 21",
+    "barcode": "ACESS 21",
+    "supplier_code": "",
+    "title": "ACESS 21",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "4.50",
+    "gross_price": "21.90",
+    "price_without_tax": "17.80",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "21.90",
+        "price_without_tax": "17.80"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 64,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 161973924,
+    "status": "on",
+    "stock": 64,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 64
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 172056729,
+    "order": 0,
+    "reference": "ACESS 23 ",
+    "barcode": "ACESS 23",
+    "supplier_code": "",
+    "title": "ACESS 23",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "7.57",
+    "gross_price": "23.90",
+    "price_without_tax": "19.43",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "23.90",
+        "price_without_tax": "19.43"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 66,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 161973924,
+    "status": "on",
+    "stock": 66,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 66
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181741175,
+    "order": 0,
+    "reference": "VLNV 9",
+    "barcode": "VLNV  9",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "4.00",
+    "gross_price": "9.99",
+    "price_without_tax": "8.12",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "9.99",
+        "price_without_tax": "8.12"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 27,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 27,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 25
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181742111,
+    "order": 0,
+    "reference": "VLNV 15",
+    "barcode": "VLNV  15",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "6.40",
+    "gross_price": "15.99",
+    "price_without_tax": "13.00",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "15.99",
+        "price_without_tax": "13.00"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 0,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 0,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 0
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181742252,
+    "order": 0,
+    "reference": "VLNV 12",
+    "barcode": "VLNV 12",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "5.20",
+    "gross_price": "12.99",
+    "price_without_tax": "10.56",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "12.99",
+        "price_without_tax": "10.56"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 27,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 27,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 27
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181742346,
+    "order": 0,
+    "reference": "VLNV 17",
+    "barcode": "VLNV 17",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "7.20",
+    "gross_price": "17.99",
+    "price_without_tax": "14.63",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "17.99",
+        "price_without_tax": "14.63"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 0,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 0,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 0
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181745213,
+    "order": 0,
+    "reference": "VLNV 5",
+    "barcode": "VLNV 5",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "2.40",
+    "gross_price": "5.99",
+    "price_without_tax": "4.87",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "5.99",
+        "price_without_tax": "4.87"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 6,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 6,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 6
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181745286,
+    "order": 0,
+    "reference": "VLNV 7",
+    "barcode": "VLNV 7",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "3.20",
+    "gross_price": "7.99",
+    "price_without_tax": "6.50",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "7.99",
+        "price_without_tax": "6.50"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 6,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 6,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 6
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181745398,
+    "order": 0,
+    "reference": "VLNV 6",
+    "barcode": "VLNV 6",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "2.80",
+    "gross_price": "6.99",
+    "price_without_tax": "5.68",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "6.99",
+        "price_without_tax": "5.68"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 0,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 0,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 0
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181745524,
+    "order": 0,
+    "reference": "VLNV 4",
+    "barcode": "VLNV",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "2.00",
+    "gross_price": "4.99",
+    "price_without_tax": "4.06",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "4.99",
+        "price_without_tax": "4.06"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 11,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 11,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 11
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181745641,
+    "order": 0,
+    "reference": "VLNV 22",
+    "barcode": "VLNV 22",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "9.20",
+    "gross_price": "22.99",
+    "price_without_tax": "18.69",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "22.99",
+        "price_without_tax": "18.69"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 24,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 24,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 23
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181746749,
+    "order": 0,
+    "reference": "VLNV 25",
+    "barcode": "VLNV 25",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "10.40",
+    "gross_price": "25.99",
+    "price_without_tax": "21.13",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "25.99",
+        "price_without_tax": "21.13"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 2,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 2,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 2
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181772088,
+    "order": 0,
+    "reference": "VLNV 29",
+    "barcode": "VLNV 29",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "12.00",
+    "gross_price": "29.99",
+    "price_without_tax": "24.38",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "29.99",
+        "price_without_tax": "24.38"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 28,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151429493,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 28,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 28
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 181773688,
+    "order": 0,
+    "reference": "VLNV 19",
+    "barcode": "VLNV 19",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "8.00",
+    "gross_price": "19.99",
+    "price_without_tax": "16.25",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "19.99",
+        "price_without_tax": "16.25"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 18,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 18,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 18
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 182391407,
+    "order": 0,
+    "reference": "VLNV 3",
+    "barcode": "VLNV 3",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "1.60",
+    "gross_price": "3.99",
+    "price_without_tax": "3.24",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "3.99",
+        "price_without_tax": "3.24"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 2,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 181741087,
+    "status": "on",
+    "stock": 2,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 2
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 205396589,
+    "order": 0,
+    "reference": "ACESS 3",
+    "barcode": "ACESS 3",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "1.00",
+    "gross_price": "3.90",
+    "price_without_tax": "3.17",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "3.90",
+        "price_without_tax": "3.17"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 15,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 161973924,
+    "status": "on",
+    "stock": 15,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 15
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 205396752,
+    "order": 0,
+    "reference": "ACESS 13",
+    "barcode": "ACESS 13",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "6.00",
+    "gross_price": "13.90",
+    "price_without_tax": "11.30",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "13.90",
+        "price_without_tax": "11.30"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 7,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 161973924,
+    "status": "on",
+    "stock": 7,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 7
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  },
+  {
+    "id": 206558873,
+    "order": 0,
+    "reference": "ACESS 2",
+    "barcode": "ACESS 2",
+    "supplier_code": "",
+    "title": "ACESSORIO",
+    "description": "",
+    "include_description": "no",
+    "supply_price": "1.20",
+    "gross_price": "2.90",
+    "price_without_tax": "2.36",
+    "prices": [
+      {
+        "id": 145418015,
+        "price": "2.90",
+        "price_without_tax": "2.36"
+      }
+    ],
+    "unit_id": 145418003,
+    "class_name": "",
+    "type_id": "P",
+    "compound": {
+      "stock": {
+        "stock": 21,
+        "store_id": 0,
+        "stock_alert": 0
+      }
+    },
+    "lot_control": 0,
+    "stock_control": 1,
+    "stock_type": "M",
+    "tax_id": "",
+    "tax_exemption": "",
+    "tax_exemption_law": "",
+    "category_id": 151499811,
+    "brand_id": 161973924,
+    "status": "on",
+    "stock": 21,
+    "stock_store": [
+      {
+        "store": "Loja principal",
+        "store_id": 145418018,
+        "qty": 21
+      }
+    ],
+    "stock_alert": 0,
+    "stores": {
+      "store": "",
+      "store_id": 0
+    }
+  }
+]
