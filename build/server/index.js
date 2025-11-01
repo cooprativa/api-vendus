@@ -4,7 +4,7 @@ import { RemixServer, Meta, Links, Outlet, ScrollRestoration, Scripts, useLoader
 import { PassThrough } from "stream";
 import { renderToPipeableStream } from "react-dom/server";
 import "@shopify/shopify-app-remix/adapters/node";
-import { shopifyApp, AppDistribution, LoginErrorType, boundary } from "@shopify/shopify-app-remix/server";
+import { shopifyApp, AppDistribution, boundary } from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { PrismaClient } from "@prisma/client";
 import { LATEST_API_VERSION } from "@shopify/shopify-api";
@@ -605,9 +605,9 @@ const polarisTranslations = {
 };
 const polarisStyles = "/assets/styles-BeiPL2RV.css";
 function loginErrorMessage(loginErrors) {
-  if ((loginErrors == null ? void 0 : loginErrors.shop) === LoginErrorType.MissingShop) {
+  if ((loginErrors == null ? void 0 : loginErrors.shop) === "MissingShop") {
     return { shop: "Please enter your shop domain to log in" };
-  } else if ((loginErrors == null ? void 0 : loginErrors.shop) === LoginErrorType.InvalidShop) {
+  } else if ((loginErrors == null ? void 0 : loginErrors.shop) === "InvalidShop") {
     return { shop: "Please enter a valid shop domain to log in" };
   }
   return {};
