@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import axios from 'axios'; // Mantido caso outras partes do app usem, mas não mais para chamadas diretas da Vendus neste arquivo
 import { getVendusApi } from "../services/settings.server"; // Mantido pois é importado, mas não será usado para chamadas da API da Vendus neste arquivo
-import  shopify  from '../shopify.server';
+import { shopifyAdmin } from '../shopify.server';
 
 
 // Data directory and file paths
