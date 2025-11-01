@@ -15,6 +15,15 @@ const app = express();
 // ✅ Serve static files (CSS, JS, images) from /public
 app.use(express.static(path.join(__dirname, "public"), { maxAge: "1h" }));
 
+
+app.use(
+  "/assets",
+  express.static(path.join(__dirname, "build", "client", "assets"), {
+    immutable: true,
+    maxAge: "1y",
+  })
+);
+
 // ✅ Remix request handler
 app.all(
   "*",
