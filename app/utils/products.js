@@ -7,6 +7,28 @@ import { getVendusApi } from "../services/settings.server"; // Mantido pois é i
 import shopify from '../shopify.server';
 
 
+import fetch from "node-fetch";
+
+const shopifyAdmin = {
+  graphql: async (query, variables = {}) => {
+    const response = await fetch(`https://${process.env.SHOPIFY_SHOP_DOMAIN}/admin/api/2024-10/graphql.json`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN,
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Shopify GraphQL error: ${response.statusText}`);
+    }
+
+    return response;
+  },
+};
+
+
 // Data directory and file paths
 const DATA_DIR = join(process.cwd(), "app", "data");
 const SEARCH_RESULTS_FILE = join(DATA_DIR, "search_results.json");
