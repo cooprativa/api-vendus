@@ -10,17 +10,14 @@ export async function action({ request }) {
 
   try {
     const formData = await request.json();
-    const { title, sku, stock } = formData;
+    const { title, variants } = formData;
+    // variants = [{ color: "Red", sku: "TSHIRT-RED", stock: 10 }, ...]
 
-    // Validate required fields
-    if (!title || !sku || stock === undefined) {
-      return json(
-        { error: "Missing required fields: title, sku, and stock" },
-        { status: 400 }
-      );
+    if (!title || !Array.isArray(variants) || variants.length === 0) {
+      return json({ error: "Missing required fields: title and variants" }, { status: 400 });
     }
 
-    // --- STEP 1: Fetch primary location ID ---
+    // --- Step 1: Get location ID ---
     const locationsQuery = `
       query {
         locations(first: 1) {
@@ -38,15 +35,14 @@ export async function action({ request }) {
     const locationsResponse = await admin.graphql(locationsQuery);
     const locationsData = await locationsResponse.json();
 
-    if (!locationsData.data?.locations?.edges?.length) {
-      return json({ error: "No locations found" }, { status: 400 });
+    const locationId = locationsData.data?.locations?.edges?.[0]?.node?.id;
+    if (!locationId) {
+      return json({ error: "No location found" }, { status: 400 });
     }
 
-    console.log("Location ID:", locationId);
+    console.log("📦 Location ID:", locationId);
 
-    const locationId = locationsData.data.locations.edges[0].node.id;
-
-    // --- STEP 2: Create the product (without inventory quantities) ---
+    // --- Step 2: Create product with color variants ---
     const createProductMutation = `
       mutation productCreate($input: ProductInput!) {
         productCreate(input: $input) {
@@ -54,11 +50,16 @@ export async function action({ request }) {
             id
             title
             handle
-            variants(first: 1) {
+            variants(first: 100) {
               edges {
                 node {
                   id
                   sku
+                  title
+                  selectedOptions {
+                    name
+                    value
+                  }
                   inventoryItem {
                     id
                   }
@@ -76,106 +77,97 @@ export async function action({ request }) {
 
     const productInput = {
       title,
-      variants: [
-        {
-          sku,
-          inventoryManagement: "SHOPIFY",
-          inventoryPolicy: "DENY"
-        }
-      ]
+      options: ["Color"],
+      variants: variants.map(v => ({
+        sku: v.sku,
+        title: `${title} - ${v.color}`,
+        options: [v.color],
+        inventoryManagement: "SHOPIFY",
+        inventoryPolicy: "DENY"
+      }))
     };
 
     const productResponse = await admin.graphql(createProductMutation, {
       variables: { input: productInput }
     });
-
     const productData = await productResponse.json();
 
-    if (productData.data?.productCreate?.userErrors?.length > 0) {
-      return json(
-        {
-          error: "Product creation failed",
-          details: productData.data.productCreate.userErrors
-        },
-        { status: 400 }
-      );
+    const productCreate = productData.data?.productCreate;
+    if (productCreate?.userErrors?.length) {
+      console.error("❌ Product creation errors:", productCreate.userErrors);
+      return json({ error: "Product creation failed", details: productCreate.userErrors }, { status: 400 });
     }
 
-    const createdProduct = productData.data?.productCreate?.product;
-    const variantNode = createdProduct?.variants?.edges?.[0]?.node;
-
-    if (!createdProduct || !variantNode) {
-      return json({ error: "Failed to create product variant" }, { status: 500 });
+    const createdProduct = productCreate?.product;
+    if (!createdProduct) {
+      return json({ error: "Product creation returned no data" }, { status: 500 });
     }
 
-    const inventoryItemId = variantNode.inventoryItem.id;
+    console.log(`✅ Created product: ${createdProduct.title} (${createdProduct.id})`);
 
-    // --- STEP 3: Set inventory quantity ---
+    // --- Step 3: Adjust inventory for each variant ---
     const adjustInventoryMutation = `
-  mutation inventoryAdjustQuantity($input: InventoryAdjustQuantityInput!) {
-    inventoryAdjustQuantity(input: $input) {
-      inventoryLevel {
-        id
-        available
-      }
-      userErrors {
-        field
-        message
-      }
-    }
-  }
-`;
-
-
-    const inventoryResponse = await admin.graphql(setInventoryMutation, {
-      variables: {
-        input: {
-          name: "Initial stock set",
-          reason: "correction",
-          changes: [
-            {
-              name: "Initial stock",
-              delta: parseInt(stock, 10),
-              inventoryItemId,
-              locationId
-            }
-          ]
+      mutation inventoryAdjustQuantity($input: InventoryAdjustQuantityInput!) {
+        inventoryAdjustQuantity(input: $input) {
+          inventoryLevel {
+            id
+            available
+          }
+          userErrors {
+            field
+            message
+          }
         }
       }
-    });
+    `;
 
-    const inventoryData = await inventoryResponse.json();
+    const inventoryResults = [];
 
-    if (inventoryData.data?.inventorySetQuantities?.userErrors?.length > 0) {
-      return json(
-        {
-          error: "Failed to set inventory quantity",
-          details: inventoryData.data.inventorySetQuantities.userErrors
-        },
-        { status: 400 }
-      );
+    for (const [i, variantEdge] of createdProduct.variants.edges.entries()) {
+      const variantNode = variantEdge.node;
+      const stock = parseInt(variants[i].stock, 10);
+
+      console.log(`🔧 Setting stock for ${variantNode.sku} → ${stock}`);
+
+      const adjustResponse = await admin.graphql(adjustInventoryMutation, {
+        variables: {
+          input: {
+            inventoryItemId: variantNode.inventoryItem.id,
+            locationId,
+            availableDelta: stock // set initial stock
+          }
+        }
+      });
+
+      const adjustData = await adjustResponse.json();
+      if (adjustData.data?.inventoryAdjustQuantity?.userErrors?.length > 0) {
+        console.error("❌ Inventory adjust error:", adjustData.data.inventoryAdjustQuantity.userErrors);
+      } else {
+        console.log(`✅ Stock set for ${variantNode.sku}`);
+      }
+
+      inventoryResults.push(adjustData.data?.inventoryAdjustQuantity);
     }
 
-    // --- SUCCESS ---
+    // --- Success Response ---
     return json({
       success: true,
-      message: "Product created successfully",
+      message: "Product with color variants created and stock updated successfully",
       product: {
         id: createdProduct.id,
         title: createdProduct.title,
-        handle: createdProduct.handle,
-        variant: {
-          id: variantNode.id,
-          sku: variantNode.sku,
-          inventoryItemId
-        },
-        locationId,
-        stock: parseInt(stock, 10)
-      }
+        variants: createdProduct.variants.edges.map(v => ({
+          id: v.node.id,
+          sku: v.node.sku,
+          color: v.node.selectedOptions.find(o => o.name === "Color")?.value,
+          inventoryItemId: v.node.inventoryItem.id
+        }))
+      },
+      inventoryResults
     });
 
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.error("🔥 Error creating product:", error);
     return json({ error: "Internal server error" }, { status: 500 });
   }
 }
