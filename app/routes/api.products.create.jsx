@@ -41,7 +41,7 @@ export async function action({ request }) {
     if (!locationsData.data?.locations?.edges?.length) {
       return json({ error: "No locations found" }, { status: 400 });
     }
-    
+
     console.log("Location ID:", locationId);
 
     const locationId = locationsData.data.locations.edges[0].node.id;
@@ -111,19 +111,21 @@ export async function action({ request }) {
     const inventoryItemId = variantNode.inventoryItem.id;
 
     // --- STEP 3: Set inventory quantity ---
-    const setInventoryMutation = `
-      mutation inventorySetQuantities($input: InventorySetQuantitiesInput!) {
-        inventorySetQuantities(input: $input) {
-          inventoryAdjustmentGroup {
-            createdAt
-          }
-          userErrors {
-            field
-            message
-          }
-        }
+    const adjustInventoryMutation = `
+  mutation inventoryAdjustQuantity($input: InventoryAdjustQuantityInput!) {
+    inventoryAdjustQuantity(input: $input) {
+      inventoryLevel {
+        id
+        available
       }
-    `;
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 
     const inventoryResponse = await admin.graphql(setInventoryMutation, {
       variables: {
