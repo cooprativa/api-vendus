@@ -41,6 +41,8 @@ export async function action({ request }) {
     if (!locationsData.data?.locations?.edges?.length) {
       return json({ error: "No locations found" }, { status: 400 });
     }
+    
+    console.log("Location ID:", locationId);
 
     const locationId = locationsData.data.locations.edges[0].node.id;
 
