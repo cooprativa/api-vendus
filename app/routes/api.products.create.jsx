@@ -92,7 +92,7 @@ export async function action({ request }) {
         sku: v.sku,
         title: `${title} - ${v.color}`,
         options: [v.color],
-        inventoryManagement: "SHOPIFY",
+        inventoryManagement: null,
         inventoryPolicy: "DENY"
       }))
     };
