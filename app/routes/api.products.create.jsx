@@ -1,4 +1,3 @@
-// app/routes/api.products.create.jsx
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 
@@ -21,7 +20,7 @@ export async function action({ request }) {
       );
     }
 
-    // First, get the primary location ID
+    // --- STEP 1: Fetch primary location ID ---
     const locationsQuery = `
       query {
         locations(first: 1) {
@@ -45,7 +44,7 @@ export async function action({ request }) {
 
     const locationId = locationsData.data.locations.edges[0].node.id;
 
-    // Create the product with inventory
+    // --- STEP 2: Create the product (without inventory quantities) ---
     const createProductMutation = `
       mutation productCreate($input: ProductInput!) {
         productCreate(input: $input) {
@@ -74,18 +73,12 @@ export async function action({ request }) {
     `;
 
     const productInput = {
-      title: title,
+      title,
       variants: [
         {
-          sku: sku,
+          sku,
           inventoryManagement: "SHOPIFY",
-          inventoryPolicy: "DENY",
-          inventoryQuantities: [
-            {
-              availableQuantity: parseInt(stock),
-              locationId: locationId
-            }
-          ]
+          inventoryPolicy: "DENY"
         }
       ]
     };
@@ -107,26 +100,78 @@ export async function action({ request }) {
     }
 
     const createdProduct = productData.data?.productCreate?.product;
+    const variantNode = createdProduct?.variants?.edges?.[0]?.node;
 
-    if (!createdProduct) {
-      return json({ error: "Failed to create product" }, { status: 500 });
+    if (!createdProduct || !variantNode) {
+      return json({ error: "Failed to create product variant" }, { status: 500 });
     }
 
+    const inventoryItemId = variantNode.inventoryItem.id;
+
+    // --- STEP 3: Set inventory quantity ---
+    const setInventoryMutation = `
+      mutation inventorySetQuantities($input: InventorySetQuantitiesInput!) {
+        inventorySetQuantities(input: $input) {
+          inventoryAdjustmentGroup {
+            createdAt
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const inventoryResponse = await admin.graphql(setInventoryMutation, {
+      variables: {
+        input: {
+          name: "Initial stock set",
+          reason: "correction",
+          changes: [
+            {
+              name: "Initial stock",
+              delta: parseInt(stock, 10),
+              inventoryItemId,
+              locationId
+            }
+          ]
+        }
+      }
+    });
+
+    const inventoryData = await inventoryResponse.json();
+
+    if (inventoryData.data?.inventorySetQuantities?.userErrors?.length > 0) {
+      return json(
+        {
+          error: "Failed to set inventory quantity",
+          details: inventoryData.data.inventorySetQuantities.userErrors
+        },
+        { status: 400 }
+      );
+    }
+
+    // --- SUCCESS ---
     return json({
       success: true,
+      message: "Product created successfully",
       product: {
         id: createdProduct.id,
         title: createdProduct.title,
         handle: createdProduct.handle,
-        variant: createdProduct.variants.edges[0]?.node
+        variant: {
+          id: variantNode.id,
+          sku: variantNode.sku,
+          inventoryItemId
+        },
+        locationId,
+        stock: parseInt(stock, 10)
       }
     });
 
   } catch (error) {
     console.error("Error creating product:", error);
-    return json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return json({ error: "Internal server error" }, { status: 500 });
   }
 }
