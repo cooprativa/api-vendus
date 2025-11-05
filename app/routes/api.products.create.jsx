@@ -1,3 +1,4 @@
+// app/routes/api.products.create.jsx
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 
@@ -14,13 +15,16 @@ export async function action({ request }) {
     // variants = [{ color: "Red", sku: "TSHIRT-RED", stock: 10 }, ...]
 
     if (!title || !Array.isArray(variants) || variants.length === 0) {
-      return json({ error: "Missing required fields: title and variants" }, { status: 400 });
+      return json(
+        { error: "Missing required fields: title and variants" },
+        { status: 400 }
+      );
     }
 
-    // --- Step 1: Get location ID ---
+    // --- Step 1: Get primary location ID ---
     const locationsQuery = `
       query {
-        locations(first: 1) {
+        locations(first: 10) {
           edges {
             node {
               id
@@ -35,12 +39,18 @@ export async function action({ request }) {
     const locationsResponse = await admin.graphql(locationsQuery);
     const locationsData = await locationsResponse.json();
 
-    const locationId = locationsData.data?.locations?.edges?.[0]?.node?.id;
+    console.log("🧭 Locations data:", JSON.stringify(locationsData, null, 2));
+
+    const locations = locationsData.data?.locations?.edges || [];
+    const primaryLocation = locations.find(loc => loc.node.isPrimary) || locations[0];
+    const locationId = primaryLocation?.node?.id;
+
     if (!locationId) {
-      return json({ error: "No location found" }, { status: 400 });
+      console.error("❌ No valid location found in Shopify.");
+      return json({ error: "No valid location found" }, { status: 400 });
     }
 
-    console.log("📦 Location ID:", locationId);
+    console.log("📦 Using location:", locationId);
 
     // --- Step 2: Create product with color variants ---
     const createProductMutation = `
@@ -95,11 +105,15 @@ export async function action({ request }) {
     const productCreate = productData.data?.productCreate;
     if (productCreate?.userErrors?.length) {
       console.error("❌ Product creation errors:", productCreate.userErrors);
-      return json({ error: "Product creation failed", details: productCreate.userErrors }, { status: 400 });
+      return json(
+        { error: "Product creation failed", details: productCreate.userErrors },
+        { status: 400 }
+      );
     }
 
     const createdProduct = productCreate?.product;
     if (!createdProduct) {
+      console.error("❌ Product creation returned no data.");
       return json({ error: "Product creation returned no data" }, { status: 500 });
     }
 
@@ -134,22 +148,28 @@ export async function action({ request }) {
           input: {
             inventoryItemId: variantNode.inventoryItem.id,
             locationId,
-            availableDelta: stock // set initial stock
+            availableDelta: stock // initial stock adjustment
           }
         }
       });
 
       const adjustData = await adjustResponse.json();
       if (adjustData.data?.inventoryAdjustQuantity?.userErrors?.length > 0) {
-        console.error("❌ Inventory adjust error:", adjustData.data.inventoryAdjustQuantity.userErrors);
+        console.error(
+          `❌ Inventory adjust error for ${variantNode.sku}:`,
+          adjustData.data.inventoryAdjustQuantity.userErrors
+        );
       } else {
         console.log(`✅ Stock set for ${variantNode.sku}`);
       }
 
-      inventoryResults.push(adjustData.data?.inventoryAdjustQuantity);
+      inventoryResults.push({
+        sku: variantNode.sku,
+        stockResult: adjustData.data?.inventoryAdjustQuantity,
+      });
     }
 
-    // --- Success Response ---
+    // --- Step 4: Success Response ---
     return json({
       success: true,
       message: "Product with color variants created and stock updated successfully",
