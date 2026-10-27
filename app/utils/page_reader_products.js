@@ -4,7 +4,7 @@ import { join } from 'path'; // Import 'join' from the 'path' module
 import 'dotenv/config'; // This automatically loads .env file
 
 const API_KEY = process.env.VENDUS_API_KEY;  // Replace with your actual API key or use process.env.VENDUS_API_KEY
-console.log(`Using Vendus API Key: ${API_KEY}`); // Log the API key for debugging (remove in production)
+console.log(`Vendus API Key: ${API_KEY ? "PRESENT" : "MISSING"}`);
 const URL = "https://www.vendus.pt/ws/v1.1/products";
 
 // Corrected Path to your search results JSON file

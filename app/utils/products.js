@@ -35,8 +35,30 @@ const SEARCH_RESULTS_FILE = join(DATA_DIR, "search_results.json");
 const SHORTCUTS_FILE = join(DATA_DIR, "shortcuts.json");
 
 
-// Replace with your actual Shopify Location ID
-const SHOPIFY_LOCATION_ID = "gid://shopify/Location/102699630920";
+/**
+ * Returns the ID of the store's primary location (falls back to the first one).
+ * Fetched from the API instead of hardcoded, so it always matches the store the app is installed on.
+ * @param {Object} admin - The Shopify Admin API client.
+ * @returns {Promise<string|null>} The location GID, or null if none is found.
+ */
+export async function getPrimaryLocationId(admin) {
+  const response = await admin.graphql(`
+    query getLocations {
+      locations(first: 10) {
+        edges {
+          node {
+            id
+            isPrimary
+          }
+        }
+      }
+    }
+  `);
+  const data = await response.json();
+  const locations = data.data?.locations?.edges || [];
+  const primaryLocation = locations.find(loc => loc.node.isPrimary) || locations[0];
+  return primaryLocation?.node?.id || null;
+}
 
 // As configurações da API da Vendus, funções de retry (VENDUS_URL, RETRY_CONFIG, sleep, getRetryDelay, fetchPageFromVendus)
 // foram removidas, pois este arquivo não fará mais chamadas diretas à API da Vendus para dados de produtos.
@@ -81,9 +103,10 @@ export async function readShortcuts() {
  * @param {Object} admin - The Shopify Admin API client.
  * @param {Object} productsToProcess - An object where keys are product references and values are product data.
  * @param {string|null} onlineStorePublicationId - The Shopify Online Store publication ID.
+ * @param {string} locationId - The Shopify location GID where inventory is adjusted.
  * @returns {Promise<Object>} An object containing results (created, updated, errors).
  */
-async function processProductBatch(admin, productsToProcess, onlineStorePublicationId) {
+async function processProductBatch(admin, productsToProcess, onlineStorePublicationId, locationId) {
   const createdProducts = [];
   const updatedProducts = [];
   const errors = [];
@@ -417,7 +440,7 @@ async function processProductBatch(admin, productsToProcess, onlineStorePublicat
                     changes: [{
                       delta: delta,
                       inventoryItemId: currentInventoryItemId,
-                      locationId: SHOPIFY_LOCATION_ID
+                      locationId: locationId
                     }]
                   }
                 }
@@ -679,7 +702,7 @@ async function processProductBatch(admin, productsToProcess, onlineStorePublicat
                     changes: [{
                       delta: newStock,
                       inventoryItemId: newInventoryItemId,
-                      locationId: SHOPIFY_LOCATION_ID
+                      locationId: locationId
                     }]
                   }
                 }
@@ -797,14 +820,15 @@ async function processProductBatch(admin, productsToProcess, onlineStorePublicat
 }
 
 /**
- * Deletes products from Shopify that exist in Shopify but are not found in the provided JSON data.
+ * Deletes products from Shopify whose reference was removed from the saved reference list.
  * It identifies products by a specific tag (`ref-`).
+ * The local JSON file is not used here: it is wiped whenever the server restarts.
  *
  * @param {Object} admin - The Shopify Admin API client.
- * @param {Object} jsonFoundProducts - An object containing products found in the local JSON, keyed by reference.
+ * @param {string[]} references - The saved product references (see shortcuts.server.js).
  * @returns {Promise<Object>} An object containing deleted products and any errors.
  */
-async function deleteShopifyProductsNotInJson(admin, jsonFoundProducts) {
+async function deleteShopifyProductsNotInJson(admin, references) {
   const deletedProducts = [];
   const deletionErrors = [];
 
@@ -856,8 +880,8 @@ async function deleteShopifyProductsNotInJson(admin, jsonFoundProducts) {
         const refTag = product.tags.find(tag => tag.startsWith('ref-'));
         const reference = refTag ? refTag.substring(4) : null;
 
-        if (reference && !jsonFoundProducts[reference]) {
-          console.log(`🗑️ Deleting Shopify product: ${product.title} (ID: ${product.id}, Reference: ${reference}) - Not found in local JSON.`);
+        if (reference && !references.includes(reference)) {
+          console.log(`🗑️ Deleting Shopify product: ${product.title} (ID: ${product.id}, Reference: ${reference}) - Removed from saved references.`);
           try {
             const deleteResponse = await admin.graphql(`
               mutation productDelete($id: ID!) {
@@ -924,12 +948,13 @@ async function deleteShopifyProductsNotInJson(admin, jsonFoundProducts) {
 /**
  * Synchronizes all product data from a JSON file with Shopify.
  * Creates new products or updates existing ones, including their prices and inventory.
- * Also deletes products from Shopify that are no longer in the JSON file.
+ * Also deletes products from Shopify whose reference was removed from the saved list.
  *
  * @param {Object} admin - The Shopify Admin API client.
+ * @param {string[]} references - The saved product references. Deletion is skipped when empty.
  * @returns {Promise<Object>} An object containing sync results (created, updated, errors, message, deletedProducts).
  */
-export async function syncProductsWithShopify(admin) {
+export async function syncProductsWithShopify(admin, references = []) {
   try {
     console.log("🔍 Reading file from:", SEARCH_RESULTS_FILE);
 
@@ -997,9 +1022,26 @@ export async function syncProductsWithShopify(admin) {
       console.warn(`⚠️ Could not fetch publications:`, pubError);
     }
 
-    const { createdProducts, updatedProducts, errors } = await processProductBatch(admin, jsonData.found, onlineStorePublicationId);
+    const locationId = await getPrimaryLocationId(admin);
+    if (!locationId) {
+      return {
+        success: false,
+        error: "No Shopify location found. Inventory cannot be updated.",
+        sourceData: jsonData
+      };
+    }
+    console.log("📍 Using location:", locationId);
 
-    const { deletedProducts, deletionErrors } = await deleteShopifyProductsNotInJson(admin, jsonData.found);
+    const { createdProducts, updatedProducts, errors } = await processProductBatch(admin, jsonData.found, onlineStorePublicationId, locationId);
+
+    // Never delete without a saved reference list: an empty list would mean deleting every synced product.
+    let deletedProducts = [];
+    let deletionErrors = [];
+    if (references.length > 0) {
+      ({ deletedProducts, deletionErrors } = await deleteShopifyProductsNotInJson(admin, references));
+    } else {
+      console.log("⚠️ No saved references available. Skipping deletions.");
+    }
 
     const totalProcessed = createdProducts.length + updatedProducts.length;
     const allErrors = [...errors, ...deletionErrors];
@@ -1127,5 +1169,5 @@ async function executeProductUpdate() {
   }
 }
 
-// Call the function to start the process
-executeProductUpdate();
+// executeProductUpdate() is no longer called on import: it ran a full sync (including deletions)
+// every time the server started.

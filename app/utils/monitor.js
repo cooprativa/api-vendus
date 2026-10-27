@@ -7,7 +7,7 @@ let monitorState = {
   isRunning: false,
   lastRun: null,
   nextRun: null,
-  interval: 30 * 1000, // 30 seconds
+  interval: 5 * 60 * 1000, // 5 minutes: each run searches the Vendus catalogue
   timeoutId: null, // To store the setTimeout ID for clearing
 };
 

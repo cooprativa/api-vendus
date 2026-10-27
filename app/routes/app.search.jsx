@@ -3,16 +3,79 @@
 import { json } from "@remix-run/node";
 import { useLoaderData, useFetcher } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
-// Assuming syncProductsWithShopify, readShortcuts, runSearchScript are in ../utils/products
-import { syncProductsWithShopify, readShortcuts, runSearchScript } from "../utils/products";
+import { syncProductsWithShopify, getPrimaryLocationId } from "../utils/products";
+import { readShortcuts } from "../utils/shortcuts.server";
+import { runSearchScript } from "../utils/vendusSearch.server";
 import { getMonitorState, toggleMonitor } from "../utils/monitor";
 import { getVendusApi } from "../services/settings.server";
 import { useEffect, useState } from "react";
-import { exec } from "child_process";
-import { promisify } from "util";
 import path from "path"; // Adicionado para manipulação de caminhos
+import { promises as fs } from "fs";
 
-const SHOPIFY_LOCATION_ID = "gid://shopify/Location/102699630920";
+const SEARCH_RESULTS_FILE = path.join(process.cwd(), "app", "data", "search_results.json");
+
+/**
+ * Fetches fresh Vendus data for every saved reference, updates search_results.json and syncs with Shopify.
+ * References not found in this run keep their previous data instead of being dropped,
+ * so a temporary Vendus failure never removes products.
+ *
+ * @param {Object} admin - The Shopify Admin API client.
+ * @returns {Promise<Object>} The result of syncProductsWithShopify.
+ */
+async function refreshAndSync(admin) {
+  const vendusApiKey = getVendusApi();
+  if (!vendusApiKey) {
+    return {
+      success: false,
+      message: "Chave da API Vendus não disponível. Não é possível atualizar dados do Vendus ou sincronizar produtos.",
+      error: "Chave da API Vendus não disponível.",
+      createdProducts: [],
+      updatedProducts: [],
+      errors: [],
+      sourceData: null
+    };
+  }
+
+  const productReferences = await readShortcuts(admin);
+
+  if (productReferences.length > 0) {
+    let previousFound = {};
+    try {
+      previousFound = JSON.parse(await fs.readFile(SEARCH_RESULTS_FILE, "utf-8")).found || {};
+    } catch (error) {
+      console.log("No previous search_results.json, starting fresh.");
+    }
+
+    const freshResults = await runSearchScript(productReferences, vendusApiKey);
+
+    const found = {};
+    const stale = [];
+    for (const ref of productReferences) {
+      if (freshResults.found[ref]) {
+        found[ref] = freshResults.found[ref];
+      } else if (previousFound[ref]) {
+        found[ref] = previousFound[ref];
+        stale.push(ref);
+      }
+    }
+    if (stale.length > 0) {
+      console.warn(`⚠️ Not found in Vendus this run, keeping previous data: ${stale.join(", ")}`);
+    }
+
+    await fs.mkdir(path.dirname(SEARCH_RESULTS_FILE), { recursive: true });
+    await fs.writeFile(SEARCH_RESULTS_FILE, JSON.stringify({
+      searchDate: freshResults.searchDate,
+      totalSearched: productReferences.length,
+      totalFound: Object.keys(found).length,
+      found,
+      notFound: freshResults.notFound
+    }, null, 2));
+  } else {
+    console.log("No saved references. Skipping Vendus refresh.");
+  }
+
+  return syncProductsWithShopify(admin, productReferences);
+}
 
 /**
  * Remix loader function to handle initial data loading and monitor state.
@@ -25,13 +88,14 @@ const SHOPIFY_LOCATION_ID = "gid://shopify/Location/102699630920";
  * @returns {Promise<Response>} A JSON response containing monitor state and Shopify location ID.
  */
 export async function loader({ request }) {
-  await authenticate.admin(request); // Still need to authenticate for the page to load
+  const { admin } = await authenticate.admin(request);
   const monitorStatus = await getMonitorState(); // Use await aqui
-  const vendusApiKeyStatus = (await getVendusApi(authenticate.admin(request))) ? "PRESENT" : "MISSING"; // Adicionado await e admin
+  const vendusApiKeyStatus = getVendusApi() ? "PRESENT" : "MISSING";
+  const shopifyLocationId = await getPrimaryLocationId(admin);
 
   return json({
     monitorStatus,
-    shopifyLocationId: SHOPIFY_LOCATION_ID.split('/').pop(),
+    shopifyLocationId: shopifyLocationId ? shopifyLocationId.split('/').pop() : "não encontrada",
     vendusApiKeyStatus
   });
 }
@@ -49,55 +113,11 @@ export async function action({ request }) {
   const formData = await request.formData();
   const intent = formData.get("intent");
 
-  const execAsync = promisify(exec);
-
-  // Função auxiliar para executar o page_reader_products.js
-  // Agora recebe apiKey e productShortcuts para passar ao script externo
-  async function runPageReaderScript(apiKey, productShortcuts) {
-    try {
-      console.log('Running page_reader_products.js via child_process...');
-      // Caminho correto para o script e passagem de argumentos
-      const scriptPath = path.join(process.cwd(), 'app', 'utils', 'page_reader_products.js');
-      const cmd = `node "${scriptPath}" --apiKey=${apiKey} --shortcuts=${JSON.stringify(productShortcuts)}`;
-
-      console.log(`Executing command: ${cmd}`); // Log do comando exato
-
-      const { stdout, stderr } = await execAsync(cmd);
-      if (stdout) console.log('🟢 Output from page_reader_products.js:', stdout);
-      if (stderr) console.error('🔴 Error from page_reader_products.js:', stderr);
-    } catch (err) {
-      console.error('❌ Failed to run page_reader_products.js:', err);
-    }
-  }
-
   if (intent === "toggleMonitor") {
     const monitorCallback = async () => {
       console.log("Monitor triggered: Running product sync...");
-
-      // Obter chave da API Vendus e atalhos de produtos dentro do callback
-      // para garantir que estão atualizados para cada execução periódica
-      const vendusApiKey = await getVendusApi(admin);
-      const productReferences = await readShortcuts();
-
-      console.log("Monitor Callback: Vendus API Key status:", vendusApiKey ? "PRESENT" : "MISSING/EMPTY");
-
-      if (vendusApiKey && productReferences.length > 0) {
-        // --- INÍCIO DA MODIFICAÇÃO CHAVE ---
-        // Chamar runPageReaderScript AQUI para garantir a busca periódica da API Vendus
-        console.log("Monitor Callback: Running page_reader_products.js to fetch fresh Vendus data...");
-        await runPageReaderScript(vendusApiKey, productReferences);
-        // --- FIM DA MODIFICAÇÃO CHAVE ---
-
-        console.log("Monitor Callback: Running runSearchScript to process Vendus data...");
-        // runSearchScript agora deve processar os dados que runPageReaderScript acabou de buscar/atualizar no JSON
-        await runSearchScript(productReferences, vendusApiKey); // Passar apiKey e productReferences aqui também
-      } else {
-        console.log("Monitor Callback: Vendus API Key ou atalhos de produto ausentes. Pulando atualização de dados Vendus.");
-      }
-
-      // Sincronizar produtos após a potencial atualização dos dados
-      const syncResult = await syncProductsWithShopify(admin);
-      console.log("Monitor sync complete:", syncResult.message);
+      const syncResult = await refreshAndSync(admin);
+      console.log("Monitor sync complete:", syncResult.message || syncResult.error);
     };
 
     const newMonitorState = toggleMonitor(monitorCallback);
@@ -105,38 +125,20 @@ export async function action({ request }) {
     return json({ success: true, newMonitorState, monitorStatus: updatedMonitorStatus });
   } else if (intent === "runInitialSync") {
     // Esta intenção lida com o gatilho manual de sincronização de produtos
-    const vendusApiKey = await getVendusApi(admin); // Obter chave da API aqui também
-    const productReferences = await readShortcuts();
-
-    // Chamar runPageReaderScript para o sync inicial manual também
-    if (vendusApiKey && productReferences.length > 0) {
-        await runPageReaderScript(vendusApiKey, productReferences);
-    } else {
-        console.warn("Action: Chave da API Vendus ou atalhos de produto ausentes. Pulando busca inicial de dados.");
-    }
-
-    let syncResult = { success: false, message: "No sync performed or Vendus API key missing.", createdProducts: [], updatedProducts: [], errors: [], sourceData: null };
-
-    // Garantir que os dados do Vendus sejam atualizados antes de sincronizar com o Shopify
-    if (vendusApiKey) {
-      try {
-        if (productReferences.length > 0) {
-          console.log("Action: Running runSearchScript to refresh Vendus data...");
-          await runSearchScript(productReferences, vendusApiKey); // Passar apiKey e productReferences
-        } else {
-          console.log("Action: No product shortcuts found. Skipping Vendus data refresh.");
-        }
-        // Realizar a sincronização após os dados do Vendus serem potencialmente atualizados
-        syncResult = await syncProductsWithShopify(admin);
-      } catch (error) {
-        console.error("Error during initial sync process:", error);
-        syncResult.message = `Error during initial sync process: ${error.message}`;
-        syncResult.error = error.message;
-      }
-    } else {
-      console.warn("Action: Chave da API Vendus não disponível. Não é possível atualizar dados do Vendus ou sincronizar produtos.");
-      syncResult.message = "Chave da API Vendus não disponível. Não é possível atualizar dados do Vendus ou sincronizar produtos.";
-      syncResult.error = "Chave da API Vendus não disponível.";
+    let syncResult;
+    try {
+      syncResult = await refreshAndSync(admin);
+    } catch (error) {
+      console.error("Error during initial sync process:", error);
+      syncResult = {
+        success: false,
+        message: `Error during initial sync process: ${error.message}`,
+        error: error.message,
+        createdProducts: [],
+        updatedProducts: [],
+        errors: [],
+        sourceData: null
+      };
     }
 
     return json(syncResult);
